@@ -1,0 +1,5 @@
+Production model for prot_arch_classifier/semantic_segmentation.
+Fixes the bug that requires input of 64 structures at once.
+
+Adds automated script for quickly evaluating decoysets.
+
