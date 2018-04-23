@@ -27,10 +27,9 @@ def segmentFold(input_file, model_path):
     return prediction_dict
 
 if __name__ == "pymol":
-   def splitList(l, n): # Annoying but necessary due to pymol buffering limit.
-    for i in range(0, len(l), n):
-        yield l[i:i + n]
-
+    def splitList(l, n): # Annoying but necessary due to pymol buffering limit.
+        for i in range(0, len(l), n):
+            yield l[i:i + n]
     try:
         input_file = sys.argv[2]
     except:
