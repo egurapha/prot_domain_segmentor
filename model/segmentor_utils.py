@@ -44,7 +44,7 @@ def getCMSize(pdb):
                     continue
     return len(A) 
 
-#Resize Function
+# Resize Function
 def resizeCM(input_arr, target_size=512, upper_tol=8, in_size=None): # size as an optional parameter if pre-calculated.
     # Note: return sizes. Use this to calculate the valid range in the assignment map.
     upper_lim = target_size + upper_tol

@@ -1,17 +1,20 @@
+# Numerical
 import torch
-import pickle
 from torch.autograd import Variable
-from pymol import cmd, stored
 import numpy as np
-import os, sys
-from segmentor_model_v2 import *
-from segmentor_utils import *
+# Pymol
+import pymol
+from pymol import cmd, stored
 import __main__
 __main__.pymol_argv = [ 'pymol', '-qei' ]
-import pymol
+# Custom
+import os, sys
+sys.path.insert(0, 'model')
+from segmentor_model_v2 import *
+from segmentor_utils import *
 
 
-model_path = 'epoch95_model'
+model_path = 'model/epoch95_model_v2'
 num_classes = 38
 class_dict = {0: 'Unassigned (Loop)', 1: 'Orthogonal Bundle', 2: 'Up-down Bundle', 3: 'Alpha Horseshoe', 4: 'Alpha/alpha barrel', 5: 'Ribbon', 6: 'Aligned Prism', 7: '3-layer Sandwich', 8: '4 Propeller', 9: '5 Propeller', 
                 10: '6 Propeller', 11: '7 Propeller', 12: '2 Solenoid', 13: '3 Solenoid', 14: 'Beta Complex', 15: 'Single Sheet', 16: 'Roll', 17: 'Beta Barrel', 18: 'Clam', 19: 'Sandwich', 20: 'Distorted Sandwich', 21: 'Trefoil', 
@@ -30,7 +33,6 @@ def predictPDB(pdb_file, model, ignore_index=-9999):
     seq_len, numbering = get_pdb_info(pdb_file)
     cm, numbering = makeContactMapTensor(pdb_file, seq_len, numbering, target_size=512, upper_tol=512)
     cm_var = Variable(cm)
-    #cm_var = Variable(cm.repeat(64,1,1,1)) # funny but necessary...
     if torch.cuda.is_available(): 
         cm_var = cm_var.cuda()
     outputs = model(cm_var)
