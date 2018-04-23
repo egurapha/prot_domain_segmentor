@@ -1,5 +1,31 @@
-Production model for prot_arch_classifier/semantic_segmentation.
-Fixes the bug that requires input of 64 structures at once.
+180423 prot_domain_segmentor.
+Raphael R. Eguchi
 
-Adds automated script for quickly evaluating decoysets.
+A CNN for performing semantic segmantation of multi-domain protein structures.
+Written in Python. Main requirements are Pytorch, Numpy Scipy.
 
+Example Usage as a Class:
+    (Class definition in DomainSegmentor.py)
+    
+    import sys
+    sys.path.insert(0, '/path/to/DomainSegmentor.py') # add to import path to run anywhere.
+    from DomainSegmentor import *
+
+    segmentor = DomainSegmentor() # Initialize model.
+    classes, res_nums = segmentor.predictClass('/path/to/pdb')  # Get Class Predictions.
+    probs, res_nums = segmentor.predict('/path/to/pdb')  # Get Probability Matrix.
+
+    print("Residue Numbers: ")
+    print(res_nums)
+    print("Class Predictions: ")
+    print(classes)
+    print("Probability Matrix: ")
+    print(probs)
+
+    # The predict function returns a matrix of probabilities and a vector of residue numbers indicating the residue number of each column.
+    # The predictClass function returns a list class predictions and corresponding vector of residue numbers. See DomainSegmentor.py for more details.
+    
+
+Example Usage as a Pymol/Python Script:
+    pymol run_segmentor.py /path/to/pdb  # Should color the structure nicely in pymol.
+    python run_segmentor.py /path/to/pdb  # Outputs a list of class predictions and corresponding residue numbers.
