@@ -1,3 +1,4 @@
+import os, sys
 sys.path.insert(0, 'model')
 from segmentor_model_v2 import *
 from segmentor_utils import *
@@ -5,7 +6,6 @@ import torch
 from torch.autograd import Variable
 import numpy as np
 import torch.nn.functional as F
-import os, sys
 
 class ProteinSegmentor:
     def __init__(self, model_path='model/epoch95_model_v2', try_gpu=True):
@@ -94,8 +94,6 @@ class ProteinSegmentor:
         return trunc_class_probs, out_num
 
 # Usage Example.
-'''
 if __name__ == '__main__':
     segmentor = ProteinSegmentor() # Initialize model, no params needed.
     probs, nums = segmentor.predict('test_cases/3gqyA.pdb') # Run prediction. Pass in a path to a pdb file.
-'''

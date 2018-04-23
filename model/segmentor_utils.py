@@ -11,7 +11,8 @@ import numpy as np
 import torch
 import warnings
 from Bio.PDB.PDBExceptions import PDBConstructionWarning
-warnings.simplefilter('ignore', PDBConstructionWarning)
+warnings.simplefilter('ignore', PDBConstructionWarning) # Ignore chain breaks.
+warnings.simplefilter('ignore', RuntimeWarning) # Bypass Scipy warning.
 matplotlib.pyplot.switch_backend('agg')
 
 def loadSelectedChains(filename):
