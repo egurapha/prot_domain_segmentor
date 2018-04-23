@@ -8,44 +8,44 @@ import numpy as np
 import torch.nn.functional as F
 
 idx_to_class = {0: 'Unassigned (Loop)',
-                            1: 'Orthogonal Bundle',
-                            2: 'Up-down Bundle',
-                            3: 'Alpha Horseshoe',
-                            4: 'Alpha/alpha barrel',
-                            5: 'Ribbon',
-                            6: 'Aligned Prism',
-                            7: '3-layer Sandwich',
-                            8: '4 Propeller',
-                            9: '5 Propeller',
-                            10: '6 Propeller',
-                            11: '7 Propeller',
-                            12: '2 Solenoid',
-                            13: '3 Solenoid',
-                            14: 'Beta Complex',
-                            15: 'Single Sheet',
-                            16: 'Roll',
-                            17: 'Beta Barrel',
-                            18: 'Clam',
-                            19: 'Sandwich',
-                            20: 'Distorted Sandwich',
-                            21: 'Trefoil',
-                            22: 'Orthogonal Prism',
-                            23: 'Roll',
-                            24: 'Ribosomal Protein L15; Chain: K; domain 2',
-                            25: 'Super Roll',
-                            26: 'Alpha-Beta Barrel',
-                            27: '2-Layer Sandwich',
-                            28: '3-Layer(aba) Sandwich',
-                            29: '3-Layer(bba) Sandwich',
-                            30: '3-Layer(bab) Sandwich',
-                            31: '4-Layer Sandwich',
-                            32: 'Alpha-beta prism',
-                            33: 'Box',
-                            34: '5-stranded Propeller',
-                            35: 'Alpha-Beta Horseshoe',
-                            36: 'Alpha-Beta Complex',
-                            37: 'Irregular',
-                            -1: 'NULL'}
+                1: 'Orthogonal Bundle',
+                2: 'Up-down Bundle',
+                3: 'Alpha Horseshoe',
+                4: 'Alpha/alpha barrel',
+                5: 'Ribbon',
+                6: 'Aligned Prism',
+                7: '3-layer Sandwich',
+                8: '4 Propeller',
+                9: '5 Propeller',
+                10: '6 Propeller',
+                11: '7 Propeller',
+                12: '2 Solenoid',
+                13: '3 Solenoid',
+                14: 'Beta Complex',
+                15: 'Single Sheet',
+                16: 'Roll',
+                17: 'Beta Barrel',
+                18: 'Clam',
+                19: 'Sandwich',
+                20: 'Distorted Sandwich',
+                21: 'Trefoil',
+                22: 'Orthogonal Prism',
+                23: 'Roll',
+                24: 'Ribosomal Protein L15; Chain: K; domain 2',
+                25: 'Super Roll',
+                26: 'Alpha-Beta Barrel',
+                27: '2-Layer Sandwich',
+                28: '3-Layer(aba) Sandwich',
+                29: '3-Layer(bba) Sandwich',
+                30: '3-Layer(bab) Sandwich',
+                31: '4-Layer Sandwich',
+                32: 'Alpha-beta prism',
+                33: 'Box',
+                34: '5-stranded Propeller',
+                35: 'Alpha-Beta Horseshoe',
+                36: 'Alpha-Beta Complex',
+                37: 'Irregular',
+                -1: 'NULL'}
 
 class DomainSegmentor:
     def __init__(self, model_path='model/epoch95_model_v2', class_dict=idx_to_class, try_gpu=True):
@@ -77,7 +77,7 @@ class DomainSegmentor:
 
     def predict(self, pdb_name, ignore_index=-9999):
         '''
-        Input: pdb file name.
+        Input: pdb name as string.
         Output: 
             trunc_class_probs -- 38 x 512 matrix. Entry (i,j) is the probility of residue j being in class i.
             res_num -- the list of pdb_residue numberings corresponding to the columns of trunc_class_probs. For example, out_num[i] = 50, then the i-th column of trunc_class_probs corresponds to residue 50 in the actual PDB.
@@ -90,7 +90,7 @@ class DomainSegmentor:
         class_probs = outputs.cpu().numpy().squeeze() # 38 x 512 matrix. The columns define a probability distribution over the 38 classes for each residue.
         res_num = []
         trunc_class_probs = np.array([None])
-        for i in range(len(numbering)):
+        for i in range(len(numbering)): # Remove entries outside of the range of the PDB.
             if numbering[i] != ignore_index:
                 res_num.append(numbering[i])
             if not trunc_class_probs.any():

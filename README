@@ -2,7 +2,7 @@
 Raphael R. Eguchi
 
 A CNN for performing semantic segmantation of multi-domain protein structures.
-Written in Python. Main requirements are Pytorch, Numpy Scipy.
+Written in Python. Main requirements are Biopython, Pytorch, Numpy, Scipy. (Btw, I use Conda since Pytorch recommends using it.)
 
 Example Usage as a Class:
     (Class definition in DomainSegmentor.py)
