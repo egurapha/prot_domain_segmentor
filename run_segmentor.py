@@ -28,6 +28,8 @@ def segmentFold(input_file, model_path):
 
 if __name__ == "pymol":
     def splitList(l, n): # Annoying but necessary due to pymol buffering limit.
+        if n == 0: 
+            yield l
         for i in range(0, len(l), n):
             yield l[i:i + n]
     try:
@@ -42,7 +44,7 @@ if __name__ == "pymol":
     prediction_dict = segmentFold(input_file, model_path=model_path)
     for i, class_name in enumerate(prediction_dict):
         color = color_list[i%len(color_list)]
-        idx_batches = splitList(prediction_dict[class_name], len(prediction_dict[class_name])/100)
+        idx_batches = splitList(prediction_dict[class_name], len(prediction_dict[class_name])/100 + 1)
         for idx_list in idx_batches: # Fix for pymol buffering.
             cmd.color(color, "resi %s" %"+".join(idx_list))
         print(color + " : " + class_name)

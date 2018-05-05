@@ -145,5 +145,5 @@ def makeContactMapTensor(file_name, chain_len, numbering, target_size=512, upper
         raise Exception("Assignment Length Adjustment Failed.")
     new_numbering = getAdjustedNumbering(cm, new_numbering, ignore_index=ignore_index)
     # Write Contact Map
-    return torch.from_numpy(cm*scale).unsqueeze(0).unsqueeze(0), new_numbering
+    return torch.from_numpy(cm*scale).unsqueeze(0).unsqueeze(0).float(), new_numbering
 

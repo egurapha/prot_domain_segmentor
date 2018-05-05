@@ -7,6 +7,7 @@ from torch.autograd import Variable
 import numpy as np
 import torch.nn.functional as F
 
+
 idx_to_class = {0: 'Unassigned (Loop)',
                 1: 'Orthogonal Bundle',
                 2: 'Up-down Bundle',
