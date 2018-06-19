@@ -6,6 +6,7 @@ import torch
 from torch.autograd import Variable
 import numpy as np
 import torch.nn.functional as F
+import scipy.stats
 
 
 idx_to_class = {0: 'Unassigned (Loop)',
@@ -76,7 +77,7 @@ class DomainSegmentor:
             model_input = Variable(cm)
         return numbering, model_input
 
-    def predict(self, pdb_name, ignore_index=-9999):
+    def predict(self, pdb_name, ignore_index=-9999, log=False):
         '''
         Input: pdb name as string.
         Output: 
@@ -85,7 +86,10 @@ class DomainSegmentor:
         '''
         numbering, model_input = self._get_input(pdb_name)
         outputs = self.model(model_input)
-        outputs = F.softmax(outputs, dim=1)
+        if log:
+            outputs = F.log_softmax(outputs, dim=1)
+        else:
+            outputs = F.softmax(outputs, dim=1)
         outputs = outputs.data[0,:,:,:]
         # Format for output.
         class_probs = outputs.cpu().numpy().squeeze() # 38 x 512 matrix. The columns define a probability distribution over the 38 classes for each residue.
@@ -120,6 +124,12 @@ class DomainSegmentor:
                 res_num.append(numbering[i])
         assert len(out_pred) == len(res_num)
         return out_pred, res_num
+
+    def computeEntropy(self, pdb_name, ignore_index=-9999):
+        trunc_class_probs, res_num = self.predict(pdb_name, log=False)
+        entropy = scipy.stats.entropy(trunc_class_probs)
+        assert len(entropy) == len(res_num)
+        return entropy, res_num
 
 # Usage Example.
 if __name__ == '__main__':

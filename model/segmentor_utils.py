@@ -123,7 +123,6 @@ def makeContactMapTensor(file_name, chain_len, numbering, target_size=512, upper
         print(chain_len)
         print(cm.shape[0])
         raise Exception("Unpadded CM and Assignment Length aren't matching.")
-
     # Resize.
     cm, sizes = resizeCM(cm, target_size=target_size, upper_tol=upper_tol)
     target_size, in_size = sizes
