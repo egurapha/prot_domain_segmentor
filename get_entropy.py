@@ -2,6 +2,7 @@
 import torch
 from torch.autograd import Variable
 import numpy as np
+import scipy.stats
 # Pymol
 import pymol
 from pymol import cmd, stored
@@ -13,7 +14,6 @@ sys.path.insert(0, 'model')
 from segmentor_model_v2 import *
 from segmentor_utils import *
 from DomainSegmentor import *
-import scipy.stats
 
 model_path = 'model/epoch95_model_v2'
 num_classes = 38
