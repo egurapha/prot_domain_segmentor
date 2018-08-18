@@ -3,6 +3,7 @@ import numpy as np
 from tqdm import tqdm
 from DomainSegmentor import *
 
+# TODO make paramters commandline accessible.
 eval_dir = 'nhlrc3'
 target_class_idx = 9 # 9, 10, 11 correspond to propeller classes
 
