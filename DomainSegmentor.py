@@ -6,6 +6,7 @@ import torch
 from torch.autograd import Variable
 import numpy as np
 import torch.nn.functional as F
+import scipy.stats
 
 
 idx_to_class = {0: 'Unassigned (Loop)',
@@ -94,10 +95,10 @@ class DomainSegmentor:
         for i in range(len(numbering)): # Remove entries outside of the range of the PDB.
             if numbering[i] != ignore_index:
                 res_num.append(numbering[i])
-            if not trunc_class_probs.any():
-                trunc_class_probs = np.expand_dims(class_probs[:,i], axis=1)
-            else:
-                trunc_class_probs = np.column_stack([trunc_class_probs, class_probs[:,i]])
+                if not trunc_class_probs.any():
+                    trunc_class_probs = np.expand_dims(class_probs[:,i], axis=1)
+                else:
+                    trunc_class_probs = np.column_stack([trunc_class_probs, class_probs[:,i]])
         return trunc_class_probs, res_num
 
     def predictClass(self, pdb_name, ignore_index=-9999):
@@ -120,6 +121,18 @@ class DomainSegmentor:
                 res_num.append(numbering[i])
         assert len(out_pred) == len(res_num)
         return out_pred, res_num
+
+    def predictConfidence(self, pdb_name, ignore_index=-9999):
+        trunc_class_probs, res_num = self.predict(pdb_name)
+        max_probs = np.max(trunc_class_probs, axis=0)
+        assert len(max_probs) == len(res_num)
+        return max_probs, res_num
+
+    def getEntropy(self, pdb_name, ignore_index=-9999):
+        trunc_class_probs, res_num = self.predict(pdb_name)
+        entropy = scipy.stats.entropy(trunc_class_probs)
+        assert len(entropy) == len(res_num)
+        return entropy, res_num
 
 # Usage Example.
 if __name__ == '__main__':

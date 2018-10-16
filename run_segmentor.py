@@ -13,6 +13,9 @@ sys.path.insert(0, 'model')
 from segmentor_model_v2 import *
 from segmentor_utils import *
 from DomainSegmentor import *
+# Plotting
+from matplotlib import cm, colors
+from matplotlib import pyplot as plt
 
 model_path = 'model/epoch95_model_v2'
 num_classes = 38
@@ -25,6 +28,28 @@ def segmentFold(input_file, model_path):
     for i in set(prediction):
         prediction_dict[class_dict[i]] = [str(numbering[z]) for z in list(np.where(prediction==i)[0])]
     return prediction_dict
+
+def makeGrid(input_file, model_path):
+    segmentor = DomainSegmentor()
+    prediction, numbering = segmentor.predictClass(input_file)
+    level_set = list(set(prediction))
+    level_dict = {level_set[i] : i for i in range(len(level_set))}
+    print(level_dict)
+    grid = np.zeros((len(prediction), len(prediction)))
+    cmap = colors.ListedColormap(['white', 'lime', 'cyan'])
+
+    for i, p in enumerate(prediction):
+        for j, q in enumerate(prediction):
+            if p == q:
+                grid[i,j] = level_dict[p]
+            else:
+                grid[i,j] = -1
+
+    plt.imshow(grid, cmap=cmap)
+    print(grid)
+    plt.savefig('color_grid.png', dpi=500)
+    return grid
+
 
 if __name__ == "pymol":
     def splitList(l, n): # Annoying but necessary due to pymol buffering limit.
@@ -58,5 +83,6 @@ if __name__ == '__main__':
     for i, class_name in enumerate(prediction_dict):
         print(class_name)
         print(prediction_dict[class_name])
+    makeGrid(input_file, model_path=model_path)
 
 
