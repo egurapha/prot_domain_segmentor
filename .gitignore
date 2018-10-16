@@ -1,4 +1,14 @@
 nhl*
 __pycache__
 *set2
-
+.*
+de_novo_fd/
+*.pdb
+*.prob
+*.entropy
+*.png
+*.cif
+sorted*
+file_list*
+abego*
+gpu_*.sh

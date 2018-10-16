@@ -49,9 +49,10 @@ idx_to_class = {0: 'Unassigned (Loop)',
                 -1: 'NULL'}
 
 class DomainSegmentor:
-    def __init__(self, model_path='model/epoch95_model_v2', class_dict=idx_to_class, try_gpu=True):
+    def __init__(self, model_path='model/epoch95_model_v2', class_dict=idx_to_class, gpu_id=None, try_gpu=True):
         self.class_dict = class_dict
         self.cuda_avail = torch.cuda.is_available() and try_gpu
+        self.gpu_id = gpu_id # used to specify a single GPU.
         self.num_classes = len(self.class_dict)-1 
         self.model = SegmentorModel(1,8,16, self.num_classes)
         self._init_model(self.model, model_path)
@@ -59,8 +60,13 @@ class DomainSegmentor:
     def _init_model(self, net, model_path):
         if self.cuda_avail:
             net.load_state_dict(torch.load(model_path))
-            net.cuda()
-            net = torch.nn.DataParallel(net, device_ids=range(torch.cuda.device_count())) 
+            
+            if self.gpu_id == None:
+                net.cuda()
+                net = torch.nn.DataParallel(net, device_ids=range(torch.cuda.device_count())) 
+            else:
+                net.cuda(self.gpu_id)
+                #net = torch.nn.DataParallel(net, device_ids=[self.gpu_id]) 
             print("Model Initialized on GPU.")
         else:
             net.load_state_dict(torch.load(model_path, map_location=lambda storage, loc: storage))
@@ -71,7 +77,10 @@ class DomainSegmentor:
         seq_len, numbering = get_pdb_info(pdb_name)
         cm, numbering = makeContactMapTensor(pdb_name, seq_len, numbering, target_size=512, upper_tol=512)
         if self.cuda_avail:
-            model_input = Variable(cm).cuda()
+            if self.gpu_id == None:
+                model_input = Variable(cm).cuda()
+            else:
+                model_input = Variable(cm).cuda(self.gpu_id)
         else:
             model_input = Variable(cm)
         return numbering, model_input
