@@ -1,14 +1,14 @@
-180423 prot_domain_segmentor.
+190207 prot_domain_segmentor.
 Raphael R. Eguchi
 
 A CNN for performing semantic segmantation of multi-domain protein structures.
-Written in Python. Main requirements are Biopython, Pytorch, Numpy, Scipy. (Btw, I use Conda since Pytorch recommends using it.)
+Written in Python. Main requirements are Biopython, Pytorch, Numpy, Scipy. (I use Conda since Pytorch recommends using it.)
 
 Example Usage as a Class:
-    (Class definition in DomainSegmentor.py)
+    (Class definition in classes/DomainSegmentor.py)
     
     import sys
-    sys.path.insert(0, '/path/to/DomainSegmentor.py') # add to import path to run anywhere.
+    sys.path.insert(0, '/path/to/classes/DomainSegmentor.py') # add to import path to run anywhere.
     from DomainSegmentor import *
 
     segmentor = DomainSegmentor() # Initialize model.
@@ -29,3 +29,15 @@ Example Usage as a Class:
 Example Usage as a Pymol/Python Script:
     pymol run_segmentor.py /path/to/pdb  # Should color the structure nicely in pymol.
     python run_segmentor.py /path/to/pdb  # Outputs a list of class predictions and corresponding residue numbers.
+
+
+190207 Update:
+Added the domain parsing variant of the model. This can be run using the DomainParser class or using the run_parser.py script using the same commands described above. For the DomainParser class, the predict() and predictClass() functions return domain probabilities and domain assignments respectively.
+For example: 
+    import sys
+    sys.path.insert(0, '/path/to/classes/DomainParser.py') # add to import path to run anywhere.
+    from DomainParser import *
+
+    parser = DomainParser() # Initialize model.
+    classes, res_nums = parser.predictClass('/path/to/pdb')  # Get Parser Predictions.
+    probs, res_nums = parser.predict('/path/to/pdb')  # Get Probability Matrix.
