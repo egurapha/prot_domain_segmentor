@@ -10,6 +10,7 @@ __main__.pymol_argv = [ 'pymol', '-qei' ]
 # Custom
 import os, sys
 sys.path.insert(0, 'model')
+sys.path.insert(0, 'classes')
 from segmentor_model_v2 import *
 from segmentor_utils import *
 from DomainSegmentor import *
