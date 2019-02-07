@@ -8,46 +8,6 @@ import numpy as np
 import torch.nn.functional as F
 import scipy.stats
 
-idx_to_class = {0: 'Unassigned (Loop)',
-                1: 'Orthogonal Bundle',
-                2: 'Up-down Bundle',
-                3: 'Alpha Horseshoe',
-                4: 'Alpha/alpha barrel',
-                5: 'Ribbon',
-                6: 'Aligned Prism',
-                7: '3-layer Sandwich',
-                8: '4 Propeller',
-                9: '5 Propeller',
-                10: '6 Propeller',
-                11: '7 Propeller',
-                12: '2 Solenoid',
-                13: '3 Solenoid',
-                14: 'Beta Complex',
-                15: 'Single Sheet',
-                16: 'Roll',
-                17: 'Beta Barrel',
-                18: 'Clam',
-                19: 'Sandwich',
-                20: 'Distorted Sandwich',
-                21: 'Trefoil',
-                22: 'Orthogonal Prism',
-                23: 'Roll',
-                24: 'Ribosomal Protein L15; Chain: K; domain 2',
-                25: 'Super Roll',
-                26: 'Alpha-Beta Barrel',
-                27: '2-Layer Sandwich',
-                28: '3-Layer(aba) Sandwich',
-                29: '3-Layer(bba) Sandwich',
-                30: '3-Layer(bab) Sandwich',
-                31: '4-Layer Sandwich',
-                32: 'Alpha-beta prism',
-                33: 'Box',
-                34: '5-stranded Propeller',
-                35: 'Alpha-Beta Horseshoe',
-                36: 'Alpha-Beta Complex',
-                37: 'Irregular',
-                -1: 'NULL'}
-
 class DomainParser:
     def __init__(self, model_path='model/parser_epoch65_model', class_dict={0:0, 1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7}, try_gpu=True):
         self.class_dict = {0:0, 1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7}
