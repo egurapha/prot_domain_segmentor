@@ -55,6 +55,9 @@ class CaspGDTPredictor:
 
 if __name__ == '__main__':
     predictor = CaspGDTPredictor()
-    print(predictor.predict('test_cases/3gqyA.pdb'))
+    pdb_file = sys.argv[1]
+    if not pdb_file:
+        raise Exception("No Input PDB Specified!")
+    print("Predicted GDT-TS: " + str(predictor.predict(pdb_file)))
 
 
