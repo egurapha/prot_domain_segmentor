@@ -49,7 +49,7 @@ class CaspGDTPredictor:
             res_num -- the list of pdb_residue numberings corresponding to the columns of trunc_class_probs. For example, out_num[i] = 50, then the i-th column of trunc_class_probs corresponds to residue 50 in the actual PDB.
         '''
         numbering, model_input = self._get_input(pdb_name)
-        model_output = self.ext_model(self.base_model(model_input))
+        model_output = self.ext_model(self.base_model(model_input*-100))
         gdt = round(float(model_output.data), 3)
         return gdt
 
