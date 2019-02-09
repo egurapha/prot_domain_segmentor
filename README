@@ -4,6 +4,9 @@ Raphael R. Eguchi
 A CNN for performing semantic segmantation of multi-domain protein structures.
 Written in Python. Main requirements are Biopython, Pytorch, Numpy, Scipy. (I use Conda since Pytorch recommends using it.)
 
+A tutorial for beginners can be found at: http://www.proteindesign.org/segmentor-tutorial.html
+
+
 Example Usage as a Class:
     (Class definition in classes/DomainSegmentor.py)
     
@@ -43,5 +46,4 @@ For example:
     probs, res_nums = parser.predict('/path/to/pdb')  # Get Probability Matrix.
 
 
-Also added the GDT predictor trained on submissions to the free modelling categories for CASP 10~12. 
-See https://www.biorxiv.org/content/10.1101/474627v3 for more details. 
+Added the GDT predictor trained on submissions to the free modelling categories for CASP 10~12. See https://www.biorxiv.org/content/10.1101/474627v3 for more details. 
