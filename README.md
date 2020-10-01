@@ -1,8 +1,8 @@
-# Deep Semantic Segmentation for Protein Structures
+# 3D Semantic Segmentation of Protein Structures
 ### Author: Raphael R. Eguchi
 
 A CNN for performing semantic segmantation of multi-domain protein structures written in PyTorch. Requires Biopython, Pytorch, Numpy, Scipy.
-A step-by-step tutorial can be found at: http://www.proteindesign.org/segmentor-tutorial.html
+A step-by-step tutorial can be found [here](http://www.proteindesign.org/segmentor-tutorial.html). 
 
 The model treats each residue in a protein analogously to a pixel in an image:
 <p align="center">
@@ -42,7 +42,7 @@ The domain parsing variant of the model can be run using the DomainParser class 
 
 ```python
 import sys
-sys.path.insert(0, '/path/to/classes/DomainParser.py') # add to import path to run anywhere.
+sys.path.insert(0, '/path/to/classes/DomainParser.py') # add to import path to your script.
 from DomainParser import *
 
 parser = DomainParser() # Initialize model.
